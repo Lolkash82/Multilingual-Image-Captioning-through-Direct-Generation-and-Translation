@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=marian
-#SBATCH --partition=GPU
+#SBATCH --partition=gpu_short
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G

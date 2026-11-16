@@ -1,0 +1,7 @@
+venv-flamingo/
+.hf_cache/
+data/multi30k/images/
+outputs/
+logs/
+__pycache__/
+.pytest_cache/

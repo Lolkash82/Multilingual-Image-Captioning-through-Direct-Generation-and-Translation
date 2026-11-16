@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=flamingo
-#SBATCH --partition=GPU
+#SBATCH --partition=gpu_short
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
