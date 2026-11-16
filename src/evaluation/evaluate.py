@@ -1,7 +1,3 @@
-"""Single-pass evaluation of all five modes. Usage: python -m src.evaluation.evaluate
-
-Writes outputs/metrics/metrics.json, summary.csv and comparison_with_thesis.csv.
-"""
 import argparse
 import csv
 import json
@@ -9,7 +5,7 @@ from pathlib import Path
 
 from ..utils.config import load_config
 
-MODES = {  # mode -> (subdirectory, evaluation language)
+MODES = {
     "en": ("captions", "en"),
     "direct_de": ("captions", "de"),
     "translate_de": ("translations", "de"),
@@ -28,7 +24,6 @@ def tokenize(text, lang):
 
 
 def meteor(hyps, refs, lang):
-    """Mean sentence-level METEOR x100 (NLTK). Synonym matching uses the English WordNet only."""
     from nltk.translate.meteor_score import meteor_score
     scores = [meteor_score([tokenize(r, lang)], tokenize(h, lang)) for h, r in zip(hyps, refs)]
     return 100 * sum(scores) / len(scores)
@@ -42,7 +37,7 @@ def language_accuracy(hyps, lang, seed):
     for h in hyps:
         try:
             detected.append(detect(h))
-        except LangDetectException:  # empty or non-linguistic output counts as wrong
+        except LangDetectException:
             detected.append("none")
     dist = {}
     for d in detected:

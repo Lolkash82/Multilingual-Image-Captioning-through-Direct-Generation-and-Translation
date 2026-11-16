@@ -1,8 +1,3 @@
-"""Generate captions for one mode. Usage: python -m src.inference.run_flamingo --lang en|de|fr
-
-Writes outputs/captions/{en,direct_de,direct_fr}.json. Progress is appended to a .partial.jsonl
-file after every batch, so an interrupted SLURM job can simply be resubmitted.
-"""
 import argparse
 import json
 import time

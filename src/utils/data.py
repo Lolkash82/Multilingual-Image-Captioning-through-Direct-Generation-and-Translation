@@ -1,4 +1,3 @@
-"""Uniform access to the prepared Multi30K JSON files."""
 import json
 import random
 from pathlib import Path
@@ -17,6 +16,5 @@ class Multi30KLoader:
         return entries
 
     def sample_few_shot(self, split, n, seed):
-        """Draw n examples deterministically; the same examples are reused for every test image."""
         entries = self.load_split(split)
         return random.Random(seed).sample(entries, n)

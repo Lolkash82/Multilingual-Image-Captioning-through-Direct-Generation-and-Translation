@@ -1,7 +1,3 @@
-"""Translate baseline: EN captions -> DE/FR with MarianMT. Usage: python -m src.translation.run_marian
-
-Reads outputs/captions/en.json, writes outputs/translations/translate_{de,fr}.json.
-"""
 import argparse
 import json
 import time
@@ -24,7 +20,6 @@ class MarianTranslator:
     def translate(self, texts, batch_size, num_beams, max_length):
         out = []
         for i in range(0, len(texts), batch_size):
-            # An empty source string would make Marian hallucinate; keep it empty instead.
             batch = texts[i : i + batch_size]
             enc = self.tokenizer([t or "." for t in batch], return_tensors="pt", padding=True,
                                  truncation=True).to(self.device)

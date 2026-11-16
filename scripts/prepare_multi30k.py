@@ -1,9 +1,3 @@
-"""Prepare Multi30K (Task 1, translation variant): captions from GitHub, images from Hugging Face.
-
-Usage: python scripts/prepare_multi30k.py [--skip-images]
-Creates data/multi30k/{train,val,test_2016_flickr}.json with entries
-{"image": "<file>.jpg", "captions": {"en": ..., "de": ..., "fr": ...}}.
-"""
 import argparse
 import gzip
 import json

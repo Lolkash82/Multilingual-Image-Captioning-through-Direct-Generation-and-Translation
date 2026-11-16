@@ -1,4 +1,3 @@
-"""CPU-only tests: post-processing and prompt construction. Run: python -m pytest tests -q"""
 from src.inference.prompt import build_prompt
 from src.inference.postprocess import clean_caption
 

@@ -1,4 +1,3 @@
-"""OpenFlamingo few-shot captioning wrapper (reproduction of the thesis FlamingoInference class)."""
 import torch
 from PIL import Image
 
@@ -38,18 +37,14 @@ class FlamingoInference:
         return self.image_processor(Image.open(path).convert("RGB"))
 
     def set_few_shot(self, examples, language):
-        """Fix the few-shot context once; it is reused for every query image."""
         self.prompt = build_prompt(examples, language, self.templates)
         self.shot_tensors = [self._load(ex["image_path"]) for ex in examples]
         self.prompt_tokens = len(self.tokenizer(self.prompt)["input_ids"])
 
     @torch.no_grad()
     def caption_batch(self, image_paths):
-        """Returns a list of dicts: caption (cleaned), raw, generated_tokens."""
-        # vision_x shape: (batch, num_images, frames=1, C, H, W)
         per_query = [torch.stack(self.shot_tensors + [self._load(p)]) for p in image_paths]
         vision_x = torch.stack(per_query).unsqueeze(2).to(self.device)
-        # The prompt is identical for every query, so batching introduces no input padding.
         enc = self.tokenizer([self.prompt] * len(image_paths), return_tensors="pt", padding=True)
         input_ids = enc["input_ids"].to(self.device)
         with torch.autocast("cuda", dtype=torch.bfloat16, enabled=self.bf16):

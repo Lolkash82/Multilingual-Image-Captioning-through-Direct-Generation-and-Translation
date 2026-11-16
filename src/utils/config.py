@@ -1,4 +1,3 @@
-"""Config loader. All paths in the config are resolved relative to the project root."""
 from pathlib import Path
 import yaml
 
