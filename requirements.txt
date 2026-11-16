@@ -1,0 +1,16 @@
+# Install torch separately to match the cluster CUDA (thesis: torch 2.10.0+cu128).
+transformers==4.44.2      # pinned: newer releases break MPT-1B loading (thesis, Section 4.1)
+open_clip_torch
+einops
+einops-exts
+sentencepiece
+sacremoses
+huggingface_hub
+pillow
+pyyaml
+tqdm
+sacrebleu
+nltk
+bert-score
+langdetect
+# OpenFlamingo itself: pip install --no-deps git+https://github.com/mlfoundations/open_flamingo.git

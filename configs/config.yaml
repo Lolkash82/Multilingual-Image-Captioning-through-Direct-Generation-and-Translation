@@ -1,0 +1,59 @@
+# Central configuration: reproduction of the OpenFlamingo baseline
+# (M. Duracka, 2026, "Implementing OpenFlamingo for Multilingual Image Captioning").
+# Values marked [thesis] are stated in the thesis; values marked [assumed] are not stated there.
+seed: 42                                   # [thesis] few-shot selection seed
+
+paths:
+  data_dir: data/multi30k                  # train.json / val.json / test_2016_flickr.json
+  images_dir: data/multi30k/images         # Flickr30K *.jpg
+  outputs_dir: outputs
+
+dataset:
+  test_split: test_2016_flickr             # [thesis] 1,000-image 2016 test split
+  fewshot_split: train                     # [thesis]
+  num_shots: 4                             # [thesis]
+
+flamingo:                                  # OpenFlamingo-3B-vitl-mpt1b [thesis]
+  clip_vision_encoder_path: ViT-L-14
+  clip_vision_encoder_pretrained: openai
+  lang_encoder_path: anas-awadalla/mpt-1b-redpajama-200b
+  tokenizer_path: anas-awadalla/mpt-1b-redpajama-200b
+  cross_attn_every_n_layers: 1
+  checkpoint_repo: openflamingo/OpenFlamingo-3B-vitl-mpt1b
+  checkpoint_file: checkpoint.pt
+  batch_size: 1                            # [assumed] thesis gives no batch size; raise for throughput
+  precision: fp32                          # [assumed] fp32 | bf16
+
+generation:                                # [thesis] Table 4-3
+  max_new_tokens: 50
+  num_beams: 3
+  repetition_penalty: 1.0
+  # temperature 1.0 in the thesis has no effect with beam search (no sampling), so it is not passed.
+
+prompts:                                   # [thesis] Listing 1
+  en: "Output:"
+  de: "German description:"
+  fr: "French description:"
+
+translation:                               # [thesis] Section 4.5
+  models:
+    de: Helsinki-NLP/opus-mt-en-de
+    fr: Helsinki-NLP/opus-mt-en-fr
+  batch_size: 64
+  num_beams: 4
+  max_length: 128
+
+evaluation:
+  bertscore_models:                        # [thesis] Section 3.3.4
+    en: roberta-large
+    de: bert-base-multilingual-cased
+    fr: bert-base-multilingual-cased
+  langdetect_seed: 0                       # [assumed] langdetect is non-deterministic without a seed
+
+# Reference numbers from thesis Table 5-3, used only for the comparison report.
+thesis_table_5_3:
+  en:           {bleu: 6.43, chrf: 23.65, meteor: 27.69, bertscore: 91.33, lang_acc: 94.5}
+  direct_de:    {bleu: 1.11, chrf: 16.67, meteor: 12.01, bertscore: 74.40, lang_acc: 63.7}
+  translate_de: {bleu: 3.95, chrf: 25.39, meteor: 23.09, bertscore: 75.97, lang_acc: 99.8}
+  direct_fr:    {bleu: 2.25, chrf: 16.62, meteor: 15.76, bertscore: 75.30, lang_acc: 82.8}
+  translate_fr: {bleu: 5.67, chrf: 24.97, meteor: 24.47, bertscore: 78.28, lang_acc: 98.8}
