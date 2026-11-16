@@ -6,3 +6,4 @@ export HF_HUB_OFFLINE=1            # compute nodes: use the cache filled by scri
 export TRANSFORMERS_OFFLINE=1
 mkdir -p logs
 echo "Job $SLURM_JOB_ID on $(hostname) at $(date)"; nvidia-smi; git rev-parse HEAD 2>/dev/null || true
+export PYTHONUNBUFFERED=1

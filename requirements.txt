@@ -14,3 +14,4 @@ nltk
 bert-score
 langdetect
 # OpenFlamingo itself: pip install --no-deps git+https://github.com/mlfoundations/open_flamingo.git
+pytest
